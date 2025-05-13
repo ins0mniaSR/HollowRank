@@ -1,37 +1,13 @@
-from srcImporter import srcImport
-from mainBoardScoring import mainBoardScoring
-from srcVars import catIdDict, gameId, numCats
+from srcVars import nmgMainCatIdDict, glitchedMainCatIdDict, mainGameId #add glitched main board calcs @ins0mniaSR
 from csvExporter import csvExport
+import config
+from boardScoringHandler import boardHandler
 
-nameTimeDict = {}
-wrTimeDict = {}
-for category in catIdDict: #fetching run information from src
-    nameTimeDict[category], wrTimeDict[category] = srcImport(gameId, catIdDict[category][0], catIdDict[category][1], catIdDict[category][2])
+sortedScoreDict = {}
 
-nameScoreDict = {} #score runs and return name and scores per cat
-for category in nameTimeDict:
-    nameScoreDict[category] = mainBoardScoring(nameTimeDict[category], wrTimeDict[category])
+### NMG Main Boards
+sortedScoreDict["nmgMain"] = boardHandler(mainGameId, nmgMainCatIdDict, config.mainScoreMax, config.nmgMainActiveNum, config.mainDecayMod) # NMG Main Boards
+sortedScoreDict["glitchedMain"] = boardHandler(mainGameId, glitchedMainCatIdDict, config.mainScoreMax, config.glitchedMainActiveNum, config.mainDecayMod) # Glitched Main Boards
 
-playerCatScoresDict = {} #create dict with name: list of scores
-for category in nameScoreDict:
-    for name in nameScoreDict[category]:
-        playerCatScoresDict.setdefault(name, []).append(nameScoreDict[category][name])
-
-
-sortedPlayerScoresDict = {} #sort list to apply diminishing value in order of run score
-for name in playerCatScoresDict:
-    sortedPlayerScoresDict[name] = sorted(playerCatScoresDict[name],reverse=True)
-
-playerScoreTotalDict = {} #apply modifiers and return dict of name : score
-for name in sortedPlayerScoresDict:
-    playerScoreTotalDict[name] = 0
-    for pos in range(0, len(sortedPlayerScoresDict[name])):
-        playerScoreTotalDict[name] += sortedPlayerScoresDict[name][pos]*pow(0.5,pos)
-
-sortedScoreDict = dict(sorted(playerScoreTotalDict.items(), key=lambda item: item[1], reverse=True)) #sort the above
-
-csvExport(sortedScoreDict) #export to csv to paste into google sheets
-
-
-
-
+csvExport(sortedScoreDict["nmgMain"], config.nmgMainOutput) # Export NMG Main
+csvExport(sortedScoreDict["glitchedMain"], config.glitchedMainOutput) # Export Glitched Main

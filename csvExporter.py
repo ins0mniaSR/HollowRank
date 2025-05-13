@@ -1,7 +1,7 @@
 import csv
 
-def csvExport(runScoreOrdered):
-    with open('output.csv', 'w', newline='') as csvfile:
+def csvExport(runScoreOrdered, filename):
+    with open(filename, 'w', newline='') as csvfile:
         fieldnames = ['Player', 'Score']
         writer = csv.writer(csvfile)
         writer.writerow(fieldnames)
