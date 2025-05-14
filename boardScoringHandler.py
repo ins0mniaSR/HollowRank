@@ -6,7 +6,7 @@ def boardHandler(gameId, catIdDict, scoreMax, activeNum, decayMod):
     nameTimeDict = {}
     wrTimeDict = {}
     for category in catIdDict: #fetching run information from src
-        nameTimeDict[category], wrTimeDict[category] = srcImport(gameId, catIdDict[category][0], catIdDict[category][1], catIdDict[category][2])
+        nameTimeDict[category], wrTimeDict[category] = srcImport(gameId, catIdDict[category])
 
     nameScoreDict = {} #score runs and return name and scores per cat
     for category in nameTimeDict:

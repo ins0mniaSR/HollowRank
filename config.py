@@ -16,3 +16,5 @@ glitchedExtensionActiveNum = 10 # how many runs are needed to remove all penalti
 ### Export Filenames
 nmgMainOutput = "nmgMainOutput.csv"
 glitchedMainOutput = "glitchedMainOutput.csv"
+nmgExtensionsOutput = "nmgExtensionsOutput.csv"
+glitchedExtensionsOutput = "glitchedExtensionsOutput.csv"
