@@ -7,7 +7,7 @@ def srcImport(gameIdIn, categoryDefinition):
     for varValue in categoryDefinition[1]: # for each of the (variableId, valueId) tuples
         values.append(VarValues({"variableId": varValue[0], "valueIds": [varValue[1]]}))
 
-    result = GetGameLeaderboard2(gameIdIn, categoryId=categoryId, values=values).perform()
+    result = GetGameLeaderboard2(gameIdIn, categoryId=categoryId, values=values).perform_all()
     playerDict = {p.id: p for p in result.playerList}
     if len(result.runList) == 0:
         return ({},0)

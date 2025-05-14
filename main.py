@@ -11,14 +11,28 @@ sortedScoreDict["glitchedMain"] = boardHandler(mainGameId, glitchedMainCatIdDict
 sortedScoreDict["nmgExtension"] = boardHandler(extensionGameId, nmgExtensionCatIdDict, config.extensionScoreMax, config.nmgExtensionActiveNum, config.extensionDecayMod) # NMG Extension Boards
 sortedScoreDict["glitchedExtension"] = boardHandler(extensionGameId, glitchedExtensionCatIdDict, config.extensionScoreMax, config.glitchedExtensionActiveNum, config.extensionDecayMod) # Glitched Main Boards
 
-# Make a summed total score
+# Make summed total scores
+nmgCats = ["nmgMain", "nmgExtension"]
+totalNmgScoreDict = {}
+for category in nmgCats:
+    for name in sortedScoreDict[category]:
+        totalNmgScoreDict[name] = totalNmgScoreDict.setdefault(name, 0) + sortedScoreDict[category][name]
+
+glitchedCats = ["glitchedMain", "glitchedExtension"]
+totalGlitchedScoreDict = {}
+for category in glitchedCats:
+    for name in sortedScoreDict[category]:
+        totalGlitchedScoreDict[name] = totalGlitchedScoreDict.setdefault(name, 0) + sortedScoreDict[category][name]
+
 totalScoreDict = {}
 for category in sortedScoreDict:
     for name in sortedScoreDict[category]:
         totalScoreDict[name] = totalScoreDict.setdefault(name, 0) + sortedScoreDict[category][name]
 
 # Now sort it 
-sortedTotalDict = dict(sorted(totalScoreDict.items(), key=lambda item: item[1], reverse=True)) #sort the above
+sortedNmgTotalDict = dict(sorted(totalNmgScoreDict.items(), key=lambda item: item[1], reverse=True)) #sort the above
+sortedGlitchedTotalDict = dict(sorted(totalGlitchedScoreDict.items(), key=lambda item: item[1], reverse=True)) 
+sortedTotalDict = dict(sorted(totalScoreDict.items(), key=lambda item: item[1], reverse=True)) 
 
 
 #Export score totals
@@ -26,4 +40,6 @@ csvExport(sortedScoreDict["nmgMain"], config.nmgMainOutput) # Export NMG Main
 csvExport(sortedScoreDict["glitchedMain"], config.glitchedMainOutput) # Export Glitched Main
 csvExport(sortedScoreDict["nmgExtension"], config.nmgExtensionsOutput) # Export NMG Extensions
 csvExport(sortedScoreDict["glitchedExtension"], config.glitchedExtensionsOutput) # Export Glitched Extensions
+csvExport(sortedNmgTotalDict, config.totalNmgOutput) # Export NMG Sums
+csvExport(sortedGlitchedTotalDict, config.totalGlitchedOutput) # Export Glitched Sums
 csvExport(sortedTotalDict, config.totalOutput) # Export Sums
