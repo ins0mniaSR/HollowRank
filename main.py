@@ -6,30 +6,31 @@ import config
 from boardScoringHandler import boardHandler
 
 sortedScoreDict = {}
+catPlayerScoreDict = {}
 finishedFetching = 0
 outputCsv = 0
-boardsFetched = {"nmgMain" : False, "glitchedMain" : False, "nmgExtensions" : False, "glitchedExtensions" : False, "nmgTotal" : False, "glitchedTotal" : False}
+boardsFetched = {"nmgMain" : False, "glitchedMain" : False, "nmgExtension" : False, "glitchedExtension" : False, "nmgTotal" : False, "glitchedTotal" : False}
 while finishedFetching == 0:
-    userIn = input("Select which boards you want to fetch data for: \n 1: NMG Mainboard \n 2: Glitched Main \n 3: NMG Extensions \n 4: Glitched Extensions \n")
+    userIn = input("Select which boards you want to fetch data for: \n 1: NMG Mainboard \n 2: Glitched Main \n 3: NMG Extension \n 4: Glitched Extension \n")
     if userIn == "1": # NMG Main Boards
         print("Fetching NMG Main Boards...")
-        sortedScoreDict["nmgMain"] = boardHandler(mainGameId, nmgMainCatIdDict, config.mainScoreMax, config.nmgMainActiveNum, config.mainDecayMod)
+        sortedScoreDict["nmgMain"], catPlayerScoreDict['nmgMain'] = boardHandler(mainGameId, nmgMainCatIdDict, config.mainScoreMax, config.nmgMainActiveNum, config.mainDecayMod)
         boardsFetched["nmgMain"] = True
         print("Fetched NMG Main Boards!\n")
     elif userIn == "2": # Glitched Main Boards
         print("Fetching Glitched Main Boards...")
-        sortedScoreDict["glitchedMain"] = boardHandler(mainGameId, glitchedMainCatIdDict, config.mainScoreMax, config.glitchedMainActiveNum, config.mainDecayMod)
+        sortedScoreDict["glitchedMain"], catPlayerScoreDict["glitchedMain"] = boardHandler(mainGameId, glitchedMainCatIdDict, config.mainScoreMax, config.glitchedMainActiveNum, config.mainDecayMod)
         boardsFetched["glitchedMain"] = True
         print("Fetched Glitched Main Boards!\n")
     elif userIn == "3": # NMG Extension Boards
         print("Fetching NMG Extension Boards...")
-        sortedScoreDict["nmgExtension"] = boardHandler(extensionGameId, nmgExtensionCatIdDict, config.extensionScoreMax, config.nmgExtensionActiveNum, config.extensionDecayMod)
-        boardsFetched["nmgExtensions"] = True
+        sortedScoreDict["nmgExtension"], catPlayerScoreDict["nmgExtension"] = boardHandler(extensionGameId, nmgExtensionCatIdDict, config.extensionScoreMax, config.nmgExtensionActiveNum, config.extensionDecayMod)
+        boardsFetched["nmgExtension"] = True
         print("Fetched NMG Extension Boards!\n")
     elif userIn == "4":
         print("Fetching Glitched Extension Boards...") # Glitched Extension Boards
-        sortedScoreDict["glitchedExtension"] = boardHandler(extensionGameId, glitchedExtensionCatIdDict, config.extensionScoreMax, config.glitchedExtensionActiveNum, config.extensionDecayMod)
-        boardsFetched["glitchedExtensions"] = True
+        sortedScoreDict["glitchedExtension"], catPlayerScoreDict["glitchedExtension"] = boardHandler(extensionGameId, glitchedExtensionCatIdDict, config.extensionScoreMax, config.glitchedExtensionActiveNum, config.extensionDecayMod)
+        boardsFetched["glitchedExtension"] = True
         print("Fetched Glitched Extension Boards!\n")
     else:
         print("Invalid input\n")
@@ -39,7 +40,7 @@ while finishedFetching == 0:
 
 # Make summed total scores for NMG / Glitched / Overall
 print("Calculating applicable combined scores...")
-if boardsFetched["nmgMain"] == True and boardsFetched["nmgExtensions"] == True: # Combined NMG board if both were fetched
+if boardsFetched["nmgMain"] == True and boardsFetched["nmgExtension"] == True: # Combined NMG board if both were fetched
     boardsFetched["nmgTotal"] = True
     nmgCats = ["nmgMain", "nmgExtension"]
     totalNmgScoreDict = {}
@@ -47,7 +48,7 @@ if boardsFetched["nmgMain"] == True and boardsFetched["nmgExtensions"] == True: 
         for name in sortedScoreDict[category]:
             totalNmgScoreDict[name] = totalNmgScoreDict.setdefault(name, 0) + sortedScoreDict[category][name]
     sortedScoreDict["nmgTotal"] = dict(sorted(totalNmgScoreDict.items(), key=lambda item: item[1], reverse=True))
-if boardsFetched["glitchedMain"] == True and boardsFetched["glitchedExtensions"] == True: # Combined Glitched board if both were fetched
+if boardsFetched["glitchedMain"] == True and boardsFetched["glitchedExtension"] == True: # Combined Glitched board if both were fetched
     boardsFetched["glitchedTotal"] = True
     glitchedCats = ["glitchedMain", "glitchedExtension"]
     totalGlitchedScoreDict = {}
@@ -61,6 +62,28 @@ if boardsFetched["nmgTotal"] == True and boardsFetched["glitchedTotal"] == True:
         for name in sortedScoreDict[category]:
             totalScoreDict[name] = totalScoreDict.setdefault(name, 0) + sortedScoreDict[category][name]
     sortedScoreDict["total"] = dict(sorted(totalScoreDict.items(), key=lambda item: item[1], reverse=True)) 
+
+finishedIndividuals = False
+while  finishedIndividuals == False:
+    validResponse = False
+    while validResponse == False:
+        userIn = input("\nDo you want the results for a specific user? (Y / N): ")
+        if userIn == "Y" or userIn == "N":
+            validResponse = True
+        else:
+            print("Invalid input!")
+
+    if userIn == "Y":
+        player = input("\nType the player's username as it appears on SRC: ")
+        individualScoresDict = {}
+        for boardType in boardsFetched:
+            if boardsFetched[boardType] == True:
+                for individualCategory in catPlayerScoreDict[boardType]:
+                    individualScoresDict[individualCategory] = catPlayerScoreDict[boardType].setdefault(individualCategory, player).setdefault(player, 0)
+        print("Exporting to ", player, "Scores.csv", sep='')
+        csvExport(individualScoresDict, (player + "Scores.csv"))
+    if userIn == "N":
+        finishedIndividuals = True
 
 print("Created applicable combined scores!\nCreating .csv...")
 

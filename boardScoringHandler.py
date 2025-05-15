@@ -30,4 +30,4 @@ def boardHandler(gameId, catIdDict, scoreMax, activeNum, decayMod):
 
     sortedScoreDict = dict(sorted(playerScoreTotalDict.items(), key=lambda item: item[1], reverse=True)) #sort the above
 
-    return sortedScoreDict 
+    return sortedScoreDict, nameScoreDict
