@@ -115,7 +115,7 @@ nmmsElderbug = ["824r9xed", [("ql6gv3v8", "5le8n2pl")]]
 agElderbug = ["824r9xed", [("ql6gv3v8", "4lx39d2l")]]
 nmmsElegy = ["jdrlgond", [("e8mrr6wl", "8143m5eq")]]
 agElegy = ["jdrlgond", [("e8mrr6wl", "z197ejyl")]]
-agAg = ["jdrlgond", [("e8mrr6wl", "z197ejyl")]]
+agAg = ["jdrlgond", [("e8mrr6wl", "q5v9r9ml")]]
 nmmsGhostbusters = ["zdnozyx2", [("0nwpxg58", "zqozg05l")]]
 agGhostbusters = ["zdnozyx2", [("0nwpxg58", "013zj0rq")]]
 nmmsGhNg = ["rklj6oqd", [("yn2v4rd8","gq7go3nq"), ("2lgz0o38", "rqvdg4wq")]] 
@@ -149,17 +149,17 @@ agZote = ["9d8gnpwk", [("onv6kpm8", "8143p40q")]]
 
 ## Main Boards (NMG) ##
 nmgMainCatIdDict = {
-'nmgAnyId' : nmgAny,
-'lpAnyId' : lpAny,
-'nmgAllSkillsId' : nmgAllSkills,
-'lpAllSkillsId' : lpAllSkills,
-'nmgTrueEndingId' : nmgTrueEnding,
-'lpTrueEndingId' : lpTrueEnding,
-'nmgLowId' : nmgLow,
-'lpLowId' : lpLow,
-'nmg106Id' : nmg106,
-'nmg107Id' : nmg107,
-'nmg112Id' : nmg112
+'Any% No Major Glitches' : nmgAny,
+'Any% 1.4.3.2+ No Major Glitches' : lpAny,
+'All Skills No Major Glitches' : nmgAllSkills,
+'All Skills 1.4.3.2+ No Major Glitches' : lpAllSkills,
+'True Ending No Major Glitches' : nmgTrueEnding,
+'True Ending 1.4.3.2+ No Major Glitches' : lpTrueEnding,
+'Low% No Major Glitches' : nmgLow,
+'Low% 1.4.3.2+ No Major Glitches' : lpLow,
+'106% TE No Major Glitches' : nmg106,
+'107% AB No Major Glitches' : nmg107,
+'112% APB No Major Glitches' : nmg112
 }
 
 ## Main Boards (Glitched) ##
