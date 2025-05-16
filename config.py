@@ -10,7 +10,7 @@ extensionScoreMax = 50000 # Default 50000
 extensionDecayMod = 0.5    # How quickly added runs' value decreases, defualt 0.5
 
 nmgExtensionActiveNum = 50 # How many runs are needed to remove all penalties for a low run count on an NMG main board, default 20
-glitchedExtensionActiveNum = 20 # how many runs are needed to remove all penalties for a low run count on a glitched main board, default 10
+glitchedExtensionActiveNum = 10 # how many runs are needed to remove all penalties for a low run count on a glitched main board, default 10
 
 
 ### Export Filenames
