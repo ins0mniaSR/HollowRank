@@ -7,11 +7,10 @@ from boardScoringHandler import boardHandler
 
 sortedScoreDict = {}
 catPlayerScoreDict = {}
-finishedFetching = 0
-outputCsv = 0
+finishedFetching = False
 boardsFetched = {"nmgMain" : False, "glitchedMain" : False, "nmgExtension" : False, "glitchedExtension" : False, "nmgTotal" : False, "glitchedTotal" : False}
-while finishedFetching == 0:
-    userIn = input("Select which boards you want to fetch data for: \n 1: NMG Mainboard \n 2: Glitched Main \n 3: NMG Extension \n 4: Glitched Extension \n")
+while finishedFetching == False:
+    userIn = input("Select which boards you want to fetch data for: \n 1: NMG Mainboard \n 2: Glitched Main \n 3: NMG Extension \n 4: Glitched Extension \n") # Handle the response to this as one thing using dicts instead of 4 elifs and add a fetch all
     if userIn == "1": # NMG Main Boards
         print("Fetching NMG Main Boards...")
         sortedScoreDict["nmgMain"], catPlayerScoreDict['nmgMain'] = boardHandler(mainGameId, nmgMainCatIdDict, config.mainScoreMax, config.nmgMainActiveNum, config.mainDecayMod)
@@ -34,9 +33,16 @@ while finishedFetching == 0:
         print("Fetched Glitched Extension Boards!\n")
     else:
         print("Invalid input\n")
-    userIn = input("Are you finished fetching boards? (Y to proceed)\n")
-    if userIn == "Y":
-        finishedFetching = 1
+    validResponse = False
+    while validResponse == False:
+        userIn = input("Are you finished fetching boards? Y/N: ")
+        if userIn == "Y":
+            finishedFetching = True
+            validResponse = True
+        if userIn == "N":
+            validResponse = True
+        else:
+            print("Invalid Response!")
 
 # Make summed total scores for NMG / Glitched / Overall
 print("Calculating applicable combined scores...")
@@ -67,7 +73,7 @@ finishedIndividuals = False
 while  finishedIndividuals == False:
     validResponse = False
     while validResponse == False:
-        userIn = input("\nDo you want the results for a specific user? (Y / N): ")
+        userIn = input("\nDo you want the results for a specific user? Y/N: ")
         if userIn == "Y" or userIn == "N":
             validResponse = True
         else:
