@@ -83,9 +83,10 @@ while  finishedIndividuals == False:
         player = input("\nType the player's username as it appears on SRC: ")
         individualScoresDict = {}
         for boardType in boardsFetched:
-            if boardsFetched[boardType] == True:
+            if boardsFetched[boardType] == True and "Total" not in boardType:
                 for individualCategory in catPlayerScoreDict[boardType]:
-                    individualScoresDict[individualCategory] = catPlayerScoreDict[boardType].setdefault(individualCategory, player).setdefault(player, 0)
+                    if catPlayerScoreDict[boardType].setdefault(individualCategory, player).setdefault(player, 0) != 0:
+                        individualScoresDict[individualCategory] = catPlayerScoreDict[boardType].setdefault(individualCategory, player).setdefault(player, 0)
         print("Exporting to ", player, "Scores.csv", sep='')
         csvExport(individualScoresDict, (player + "Scores.csv"))
     if userIn == "N":
