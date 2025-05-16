@@ -39,7 +39,7 @@ while finishedFetching == False:
         if userIn == "Y":
             finishedFetching = True
             validResponse = True
-        if userIn == "N":
+        elif userIn == "N":
             validResponse = True
         else:
             print("Invalid Response!")
